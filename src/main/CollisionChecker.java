@@ -90,29 +90,28 @@ public class CollisionChecker {
                 switch (entity.direction) {
                     case "UP":
                         entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
-                        if (entity.solidArea.getBoundsInLocal().intersects(gPanel.obj[i].solidArea.getBoundsInLocal()))
-                            System.out.println("UP collision !");
                         break;
                     case "DOWN":
                         entity.solidArea.setY(entity.solidArea.getY() + entity.speed);
-                        if (entity.solidArea.getBoundsInLocal().intersects(gPanel.obj[i].solidArea.getBoundsInLocal()))
-                            System.out.println("DOWN collision !");
                         break;
                     case "LEFT":
                         entity.solidArea.setX(entity.solidArea.getX() - entity.speed);
-                        if (entity.solidArea.getBoundsInLocal().intersects(gPanel.obj[i].solidArea.getBoundsInLocal()))
-                            System.out.println("LEFT collision !");
                         break;
                     case "RIGHT":
                         entity.solidArea.setX(entity.solidArea.getX() + entity.speed);
-                        if (entity.solidArea.getBoundsInLocal().intersects(gPanel.obj[i].solidArea.getBoundsInLocal()))
-                            System.out.println("RIGHT collision !");
                         break;
-
-
                     default:
                         break;
                 }
+                if (entity.solidArea.getBoundsInLocal().intersects(gPanel.obj[i].solidArea.getBoundsInLocal())) {
+                    if (gPanel.obj[i].collision == true) {
+                        entity.collisionOn = true;
+                    }
+                    if (player == true) {
+                        index = i;
+                    }
+                }
+
 
                 entity.solidArea.setX(entity.solidAreaDefaultX);
                 entity.solidArea.setY(entity.solidAreaDefaultY);
@@ -122,6 +121,99 @@ public class CollisionChecker {
         }
         
         return index;
+    }
+
+    public int checkEntity(Entity entity, Entity[] target) {
+
+        int index = 999; 
+
+        for (int i = 0; i < target.length; i++) {
+
+            if (target[i] != null) {
+                // get entity solid area position
+                entity.solidArea.setX(entity.worldX + entity.solidArea.getX());
+                entity.solidArea.setY(entity.worldY + entity.solidArea.getY());
+
+                // get target solid area position 
+                target[i].solidArea.setX(target[i].worldX + target[i].solidArea.getX());
+                target[i].solidArea.setY(target[i].worldY + target[i].solidArea.getY());
+
+                switch (entity.direction) {
+                    case "UP":
+                        entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
+                        break;
+                    case "DOWN":
+                        entity.solidArea.setY(entity.solidArea.getY() + entity.speed);
+                        break;
+                    case "LEFT":
+                        entity.solidArea.setX(entity.solidArea.getX() - entity.speed);
+                        break;
+                    case "RIGHT":
+                        entity.solidArea.setX(entity.solidArea.getX() + entity.speed);
+                        break;
+                    default:
+                        break;
+                }
+                if (entity.solidArea.getBoundsInLocal().intersects(target[i].solidArea.getBoundsInLocal())) {
+                    if (target[i] != entity) {
+                        entity.collisionOn = true;
+                        index = i;
+                    }
+                }
+
+
+                entity.solidArea.setX(entity.solidAreaDefaultX);
+                entity.solidArea.setY(entity.solidAreaDefaultY);
+                target[i].solidArea.setX(target[i].solidAreaDefaultX);
+                target[i].solidArea.setY(target[i].solidAreaDefaultY);
+            }
+        }
+        
+        return index;
+    
+    }
+
+    public boolean checkPlayer(Entity entity) {
+
+        boolean contactPlayer = false;
+
+        // get entity solid area position
+        entity.solidArea.setX(entity.worldX + entity.solidArea.getX());
+        entity.solidArea.setY(entity.worldY + entity.solidArea.getY());
+
+        // get target solid area position 
+        gPanel.player.solidArea.setX(gPanel.player.worldX + gPanel.player.solidArea.getX());
+        gPanel.player.solidArea.setY(gPanel.player.worldY + gPanel.player.solidArea.getY());
+
+        switch (entity.direction) {
+            case "UP":
+                entity.solidArea.setY(entity.solidArea.getY() - entity.speed);
+                break;
+            case "DOWN":
+                entity.solidArea.setY(entity.solidArea.getY() + entity.speed);
+                break;
+            case "LEFT":
+                entity.solidArea.setX(entity.solidArea.getX() - entity.speed);
+                break;
+            case "RIGHT":
+                entity.solidArea.setX(entity.solidArea.getX() + entity.speed);
+                break;
+
+            default:
+                break;
+        }
+        if (entity.solidArea.getBoundsInLocal().intersects(gPanel.player.solidArea.getBoundsInLocal())) {
+            entity.collisionOn = true;
+            contactPlayer = true;
+        }
+
+
+        entity.solidArea.setX(entity.solidAreaDefaultX);
+        entity.solidArea.setY(entity.solidAreaDefaultY);
+        gPanel.player.solidArea.setX(gPanel.player.solidAreaDefaultX);
+        gPanel.player.solidArea.setY(gPanel.player.solidAreaDefaultY);
+
+        return contactPlayer;
     }
 
 }

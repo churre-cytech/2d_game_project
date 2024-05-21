@@ -1,15 +1,17 @@
 package main;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import object.SuperObject;
 import tile.TileManager;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+import entity.Entity;
 import entity.Player;
 
 public class GamePanel extends Canvas
@@ -17,10 +19,10 @@ public class GamePanel extends Canvas
 
     // SCREEN SETTINGS
     public static final int TILE_SIZE = 48;
-    public static final int MAX_SCREEN_COL = 16;
-    public static final int MAX_SCREEN_ROW = 12;
-    public static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 pixels
-    public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 pixels
+    public static final int MAX_SCREEN_COL = 18;
+    public static final int MAX_SCREEN_ROW = 14;
+    public static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
+    public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
 
     // WORLD SETTINGS
     public final int MAX_WORLD_COL = 50;
@@ -30,8 +32,10 @@ public class GamePanel extends Canvas
 
     private GraphicsContext gc;
     private AnimationTimer gameLoop;
+    public UI ui = new UI(this);
 
-    private ArrayList<String> inputList = new ArrayList<String>();
+    public final GameKeyHandler keyHandler = new GameKeyHandler(this);
+    public EventHandler eventHandler = new EventHandler(this);
 
     public Player player = new Player(this);
 
@@ -39,41 +43,47 @@ public class GamePanel extends Canvas
 
     public CollisionChecker cChecker = new CollisionChecker(this);
 
-    public SuperObject obj[] = new SuperObject[10];
+    // OBJECT
+    public Entity obj[] = new Entity[10];
     public AssetSetter aSetter = new AssetSetter(this);
+
+    // NPC
+    public Entity npc[] = new Entity[10];
+
+    // MONSTER
+    public Entity monster[] = new Entity[10];
+
+    // FOR THE DRAWING ORDER
+    ArrayList<Entity> entityList = new ArrayList<Entity>();
+
+    // GAME STATES
+    public int gameState;
+    public final int playState = 1;
+    public final int pauseState = 2;
+    public final int dialogueState = 3;
+    public final int characterState = 4;
 
     public GamePanel()
     {
         super(SCREEN_WIDTH, SCREEN_HEIGHT);
         gc = getGraphicsContext2D();
 
-        // set up event handlers for key presses and releases
-        setFocusTraversable(true); // enable keyboard input for the canvas
-        setOnKeyPressed(this::handleKeyPressed);
-        setOnKeyReleased(this::handleKeyReleased);
+        setFocusTraversable(true);
+        addEventHandler(KeyEvent.KEY_PRESSED, keyHandler);
+        addEventHandler(KeyEvent.KEY_RELEASED, keyHandler);
     }
 
-    private void handleKeyPressed(KeyEvent event)
-    {
-        String keyName = event.getCode().toString();
-        if (!inputList.contains(keyName)) {
-            inputList.add(keyName);
-        }
-    }
-
-    private void handleKeyReleased(KeyEvent event)
-    {
-        String keyName = event.getCode().toString();
-        inputList.remove(keyName);
-    }
 
     public void setupGame() {
         aSetter.setObject();
+        aSetter.setNPC();
+        aSetter.setMonster();
+        gameState = playState;
     }
 
     public void startGameLoop()
     {
-        AnimationTimer gameLoop = new AnimationTimer()
+        gameLoop = new AnimationTimer()
         {
 
             @Override
@@ -87,28 +97,90 @@ public class GamePanel extends Canvas
         gameLoop.start();
     }
 
-    private void update()
-    {
-        player.update(inputList);
+    private void update() {
+
+        // PLAY STATE
+        if (gameState == playState) {
+
+            player.update(keyHandler);
+
+            for (int i = 0; i < npc.length; i++) {
+                if (npc[i] != null) {
+                    npc[i].update();
+                }
+            }
+
+            for (int i = 0; i < monster.length; i++) {
+                if (monster[i] != null) {
+                    if (monster[i].alive == true) {
+                        monster[i].update();
+                    } else {
+                        monster[i] = null;
+                    }
+                }
+            }
+
+
+        }
+
+        // PAUSE STATE
+        if (gameState == pauseState) {
+            // TODO
+        }
+        
     }
 
     private void render() {
-        // clear canvas
-        gc.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        // draw background
+        // CLEANING MAP
+        gc.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         gc.setFill(Color.BLACK);
         gc.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         tileManager.render(gc);
-        
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
-                obj[i].render(gc, this);
+
+        // MANAGING THE ENTITIES FOR THE RENDER ORDER
+        entityList.add(player);
+
+        for (int i = 0; i < npc.length; i++) {
+            if (npc[i] != null) {
+                entityList.add(npc[i]);
             }
         }
 
-        player.render(gc);
+        for (int i = 0; i < monster.length; i++) {
+            if (monster[i] != null) {
+                entityList.add(monster[i]);
+            }
+        }
+
+        for (int i = 0; i < obj.length; i++) {
+            if (obj[i] != null) {
+                entityList.add(obj[i]);
+            }
+        }
+
+        // SORT
+        Collections.sort(entityList, new Comparator<Entity>() {
+
+            @Override
+            public int compare(Entity e1, Entity e2) {
+                
+                int result = Integer.compare(e1.worldY, e2.worldY);
+                return result;
+            }
+            
+        });
+
+        // DRAW ENTITIES
+        for (int i = 0; i < entityList.size(); i++) {
+            entityList.get(i).render(gc);
+        }
+        // EMPTY ENTITIES LIST
+        entityList.clear();
+
+        ui.render(gc);
+
     }
 
     

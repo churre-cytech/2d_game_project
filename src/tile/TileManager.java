@@ -22,7 +22,7 @@ public class TileManager {
         mapTileNum = new int[gPanel.WORLD_WIDTH][gPanel.WORLD_HEIGHT];
 
         getTileImage();
-        loadMap("/maps/world01.txt");
+        loadMap("/map/world01.txt");
     }
 
     public void getTileImage() {
@@ -64,7 +64,7 @@ public class TileManager {
             int col = 0;
             int row = 0;
 
-            while(col < gPanel.MAX_WORLD_COL && row < gPanel.MAX_WORLD_ROW) {
+            while (col < gPanel.MAX_WORLD_COL && row < gPanel.MAX_WORLD_ROW) {
                 String line = br.readLine();
                 while (col < gPanel.MAX_WORLD_COL) {
                     String numbers[] = line.split(" ");

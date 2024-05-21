@@ -1,15 +1,20 @@
 package object;
 
+import entity.Entity;
 import javafx.scene.image.Image;
+import main.GamePanel;
 
-public class OBJ_Chest extends SuperObject {
+public class OBJ_Chest extends Entity {
 
-    public OBJ_Chest() {
+    GamePanel gPanel;
+
+    public OBJ_Chest(GamePanel gPanel) {
+        super(gPanel);
         
         name = "Chest";
 
         try {
-            image = new Image("/objects/chest.png");
+            down1 = new Image("/object/chest.png");
             
         } catch (Exception e) {
             e.printStackTrace();
