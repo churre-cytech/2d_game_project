@@ -11,9 +11,12 @@ public class OBJ_Heart extends Entity {
     public OBJ_Heart(GamePanel gPanel) {
         super(gPanel);
 
-        name = "Heart";
+        this.gPanel = gPanel;
 
+        type = type_pickUpOnly;
+        name = "Heart";
         try {
+            down1 = new Image("/object/heart_full.png");
             image = new Image("/object/heart_full.png");
             image2 = new Image("/object/heart_half.png");
             image3 = new Image("/object/heart_blank.png");            
@@ -21,6 +24,17 @@ public class OBJ_Heart extends Entity {
             e.printStackTrace();
         }
 
+        itemValue = 1;
     }
 
+    public void use(Entity entity) {
+
+        System.out.println("Life + " + itemValue);
+
+        // Same as OBJ_Potion_RED -> maybe put this code at the end of update() in player class
+        entity.life += itemValue;
+        if (entity.life > entity.maxLife) {
+            entity.life = entity.maxLife;
+        }
+    }
 }

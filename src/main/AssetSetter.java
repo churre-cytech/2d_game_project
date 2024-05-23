@@ -6,8 +6,10 @@ import object.OBJ_Shield_Blue;
 import entity.NPC_OldMan;
 import monster.MON_GreenSlime;
 import object.OBJ_Axe;
+import object.OBJ_Bronze_Coin;
 import object.OBJ_Chest;
 import object.OBJ_Door;
+import object.OBJ_Heart;
 
 public class AssetSetter {
     
@@ -85,6 +87,15 @@ public class AssetSetter {
         gPanel.obj[i].worldY = 28 * GamePanel.TILE_SIZE;
         i++;
 
+        gPanel.obj[i] = new OBJ_Bronze_Coin(gPanel);
+        gPanel.obj[i].worldX = 25 * GamePanel.TILE_SIZE;
+        gPanel.obj[i].worldY = 19 * GamePanel.TILE_SIZE;
+        i++;
+
+        gPanel.obj[i] = new OBJ_Heart(gPanel);
+        gPanel.obj[i].worldX = 24 * GamePanel.TILE_SIZE;
+        gPanel.obj[i].worldY = 18 * GamePanel.TILE_SIZE;
+        i++;
 
     }
 

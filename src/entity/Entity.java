@@ -51,6 +51,7 @@ public class Entity {
     public Entity currentShield;
 
     public String description;
+    public int itemValue;
 
     // TYPE
     public int type; // 0 = player, 1 = npc, 2 = monster
@@ -61,6 +62,7 @@ public class Entity {
     public final int type_axe = 4;
     public final int type_shield = 5;
     public final int type_consumable = 6;
+    public final int type_pickUpOnly = 7;
 
     // ITEM ATTRIBUTES
     public int attackValue;
@@ -141,6 +143,19 @@ public class Entity {
     public void setAction() {}
     public void damageReaction() {}
     public void use(Entity entity) {}
+
+    // ITEM DROP
+    public void checkDrop() {}
+    public void dropItem(Entity droppedItem) {
+        for (int i = 0; i < gPanel.obj.length; i++) {
+            if (gPanel.obj[i] == null) {
+                gPanel.obj[i] = droppedItem;
+                gPanel.obj[i].worldX = worldX;
+                gPanel.obj[i].worldY = worldY;
+                break;
+            }
+        }
+    }
 
     public void speak() {
         if (dialoguesLines[dialogueIndex] == null) {

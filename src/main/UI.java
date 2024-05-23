@@ -39,7 +39,7 @@ public class UI {
         drawPlayerLife();
 
         if (gPanel.gameState == gPanel.playState) {
-            
+
         } else if (gPanel.gameState == gPanel.pauseState) {
             drawPauseScreen();
         } else if (gPanel.gameState == gPanel.dialogueState) {
@@ -112,52 +112,58 @@ public class UI {
 
         int textX = frameX + 20;
         int textY = frameY + GamePanel.TILE_SIZE;
-        final int lineHeight = 32;
+        final int lineHeight = 40;
 
         // NAMES
         gc.fillText("Life", textX, textY);
-        textY += 40;
+        textY += lineHeight;
         gc.fillText("Strength", textX, textY);
-        textY += 40;
+        textY += lineHeight;
         gc.fillText("Dexterity", textX, textY);
-        textY += 40;
+        textY += lineHeight;
+        gc.fillText("Coin", textX, textY);
+        textY += lineHeight;
         gc.fillText("Attack", textX, textY);
-        textY += 40;
+        textY += lineHeight;
         gc.fillText("Defense", textX, textY);
-        textY += 40;
+        textY += lineHeight;
         gc.fillText("Current Weapon", textX, textY);
-        textY += 40;
+        textY += lineHeight;
         gc.fillText("Current Shield", textX, textY);
-        textY += 40;
+        textY += lineHeight;
 
 
         // VALUES
-        int tailX = (frameX + frameWidth) - 30;
+        int tailX = (frameX + frameWidth) - 40;
         // RESET textY
         textY = frameY + GamePanel.TILE_SIZE;
         String value;
 
         value = String.valueOf(gPanel.player.life);
         gc.fillText(value, tailX, textY);
-        textY += 40;
+        textY += lineHeight;
 
         value = String.valueOf(gPanel.player.strength);
         gc.fillText(value, tailX, textY);
-        textY += 40;
+        textY += lineHeight;
 
         value = String.valueOf(gPanel.player.dexterity);
         gc.fillText(value, tailX, textY);
-        textY += 40;
+        textY += lineHeight;
+        
+        value = String.valueOf(gPanel.player.coin);
+        gc.fillText(value, tailX, textY);
+        textY += lineHeight;
 
         value = String.valueOf(gPanel.player.attack);
         gc.fillText(value, tailX, textY);
-        textY += 40;
+        textY += lineHeight;
 
         value = String.valueOf(gPanel.player.defense);
         gc.fillText(value, tailX, textY);
 
         gc.drawImage(gPanel.player.currentWeapon.down1, tailX - 15, textY + 10, 40, 40);
-        textY += 40;
+        textY += lineHeight;
 
         gc.drawImage(gPanel.player.currentShield.down1, tailX - 15, textY + 10, 40, 40);
 
@@ -254,5 +260,4 @@ public class UI {
         int itemIndex = slotCol + (slotRow * 6);
         return itemIndex;
     }
-
 }

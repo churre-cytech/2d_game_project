@@ -5,6 +5,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import tile.TileManager;
 
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class GamePanel extends Canvas
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     // OBJECT
-    public Entity obj[] = new Entity[15];
+    public Entity obj[] = new Entity[20];
     public AssetSetter aSetter = new AssetSetter(this);
 
     // NPC
@@ -115,6 +116,7 @@ public class GamePanel extends Canvas
                     if (monster[i].alive == true) {
                         monster[i].update();
                     } else {
+                        monster[i].checkDrop();
                         monster[i] = null;
                     }
                 }
@@ -179,7 +181,25 @@ public class GamePanel extends Canvas
 
         ui.render(gc);
 
-        // if ()
+        // DEBUG
+        if (keyHandler.showTextDebug == true) {
+
+            gc.setFont(new Font("Arial", 24));
+            gc.setFill(Color.WHITE);
+
+            int x = 10;
+            int y = 400;
+            int lineHeight = 40;
+
+            gc.fillText("WorldX : " + player.worldX , x, y);
+            y += lineHeight;
+            gc.fillText("WorldY : " + player.worldY , x, y);
+            y += lineHeight;
+            gc.fillText("Col : " + (int) (player.worldX + player.solidArea.getX()) / TILE_SIZE, x, y);
+            y += lineHeight;
+            gc.fillText("Row : " + (int) (player.worldY + player.solidArea.getY()) / TILE_SIZE, x, y);
+            y += lineHeight;
+        }
     }
 
     

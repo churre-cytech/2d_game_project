@@ -5,6 +5,8 @@ import java.util.Random;
 import entity.Entity;
 import javafx.scene.image.Image;
 import main.GamePanel;
+import object.OBJ_Bronze_Coin;
+import object.OBJ_Heart;
 
 public class MON_GreenSlime extends Entity {
 
@@ -80,5 +82,16 @@ public class MON_GreenSlime extends Entity {
         direction = gPanel.player.direction;
     }
 
+    public void checkDrop() {
+
+        int i = new Random().nextInt(100)+1;
+
+        if (i < 50) {
+            dropItem(new OBJ_Heart(gPanel));
+        }
+        if (i >= 50 && i < 100) {
+            dropItem(new OBJ_Bronze_Coin(gPanel));
+        }
+    }
     
 }

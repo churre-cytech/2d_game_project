@@ -62,6 +62,7 @@ public class Player extends Entity {
         life = maxLife;
         strength = 1;
         dexterity = 1;
+        coin = 0;
         currentWeapon = new OBJ_Sword_Normal(gPanel);
         currentShield = new OBJ_Shield_Wood(gPanel);
         attack = getAttack();
@@ -357,42 +358,50 @@ public class Player extends Entity {
     }
 
     public void pickUpObject(int i) {
-
-        // String objectName = gPanel.obj[i].name;
-        // String text;
-
         
         if (i != 999) {
 
             String objectName = gPanel.obj[i].name;
             String text;
 
-        if (inventory.size() != maxInventorySize) {
-                inventory.add(gPanel.obj[i]);
-                text = "Got a " + objectName + " !";
+            if (gPanel.obj[i].type == type_pickUpOnly) {
+                gPanel.obj[i].use(this);
+                gPanel.obj[i] = null;
+            } else {
+
+                if (inventory.size() != maxInventorySize) {
+                    inventory.add(gPanel.obj[i]);
+                    text = "Got a " + objectName + " !";
+                }
+                else {
+                    text = "You cannot carry any more !";
+                }
+                System.out.println(text);
+                gPanel.obj[i] = null;
+
             }
-            else {
-                text = "You cannot carry any more !";
-            }
-            // gPanel.ui.addMessage(text);
-            System.out.println(text);
-            gPanel.obj[i] = null;
+
         } 
+
+
+
         // switch (objectName) {
-            //     case "Key":
-            //         hasKey++;
-            //         gPanel.obj[i] = null;       
-            //         System.out.println("Key : " + hasKey);             
-            //         break;
-            //     case "Door":
-            //         if (hasKey > 0) {
-            //             gPanel.obj[i] = null;
-            //             hasKey--;
-            //         }
-            //         break;
-            //     default:
-            //         break;
-            // }
+        //     case "Key":
+        //         hasKey++;
+        //         gPanel.obj[i] = null;       
+        //         System.out.println("Key : " + hasKey);             
+        //         break;
+        //     case "Door":
+        //         if (hasKey > 0) {
+        //             gPanel.obj[i] = null;
+        //             hasKey--;
+        //         }
+        //         break;
+        //     default:
+        //         break;
+        // }
+
+
     }
 
     public void render(GraphicsContext gc) 
