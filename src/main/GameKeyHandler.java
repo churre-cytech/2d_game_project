@@ -8,6 +8,7 @@ public class GameKeyHandler implements EventHandler<KeyEvent> {
     GamePanel gPanel;
 
     public boolean moveUp, moveDown, moveLeft, moveRight, enterPressed;
+    public boolean showTextDebug = false;
 
     public GameKeyHandler(GamePanel gPanel) {
         this.gPanel = gPanel;
@@ -40,19 +41,43 @@ public class GameKeyHandler implements EventHandler<KeyEvent> {
                 switch (event.getCode()) {
                     case Z:
                     case UP:
-                        moveUp = true;
+                        if (gPanel.gameState == gPanel.playState) {
+                            moveUp = true;
+                        } else if (gPanel.gameState == gPanel.characterState) {
+                            if (gPanel.ui.slotRow != 0) {
+                                gPanel.ui.slotRow--;
+                            }
+                        }
                         break;
                     case S:
                     case DOWN:
-                        moveDown = true;
+                        if (gPanel.gameState == gPanel.playState) {
+                            moveDown = true;
+                        } else if (gPanel.gameState == gPanel.characterState) {
+                            if (gPanel.ui.slotRow != 3) {
+                                gPanel.ui.slotRow++;
+                            }
+                        }
                         break;
                     case Q:
                     case LEFT:
-                        moveLeft = true;
+                        if (gPanel.gameState == gPanel.playState) {
+                            moveLeft = true;
+                        } else if (gPanel.gameState == gPanel.characterState) {
+                            if (gPanel.ui.slotCol != 0) {
+                                gPanel.ui.slotCol--;
+                            }
+                        }
                         break;
                     case D:
                     case RIGHT:
-                        moveRight = true;
+                        if (gPanel.gameState == gPanel.playState) {
+                            moveRight = true;
+                        } else if (gPanel.gameState == gPanel.characterState) {
+                            if (gPanel.ui.slotCol != 5) {
+                                gPanel.ui.slotCol++;
+                            }
+                        }
                         break;
                     case C: 
                         if (gPanel.gameState == gPanel.playState) {
@@ -73,6 +98,16 @@ public class GameKeyHandler implements EventHandler<KeyEvent> {
                             gPanel.gameState = gPanel.playState;
                         } else if (gPanel.gameState == gPanel.playState) {
                             enterPressed = true;
+                        } else if (gPanel.gameState == gPanel.characterState) {
+                            gPanel.player.selectItem();
+                        }
+                        break;
+                    case T:
+                        if (showTextDebug == false) {
+                            showTextDebug = true;
+                        }
+                        else {
+                            showTextDebug = false;
                         }
                         break;
                     default:

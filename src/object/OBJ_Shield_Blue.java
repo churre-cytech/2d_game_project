@@ -4,20 +4,20 @@ import entity.Entity;
 import javafx.scene.image.Image;
 import main.GamePanel;
 
-public class OBJ_Shield_Wood extends Entity {
+public class OBJ_Shield_Blue extends Entity {
 
-    public OBJ_Shield_Wood(GamePanel gPanel) {
+    public OBJ_Shield_Blue(GamePanel gPanel) {
         super(gPanel);
 
         type = type_shield;
-        name = "Wood Shield";
+        name = "Blue Shield";
         try {
-            down1 = new Image("/object/shield_wood.png");
+            down1 = new Image("/object/shield_blue.png");
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        defenseValue = 1;
+        defenseValue = 2;
     }
 
 }

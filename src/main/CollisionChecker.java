@@ -17,17 +17,17 @@ public class CollisionChecker {
         int entityTopWorldY = (int) (entity.worldY + entity.solidArea.getY());
         int entityBottomWorldY = (int) (entity.worldY + entity.solidArea.getY() + entity.solidArea.getHeight());
 
-        int entityLeftCol = entityLeftWorldX/gPanel.TILE_SIZE;
-        int entityRightCol = entityRightWorldX/gPanel.TILE_SIZE;
-        int entityTopRow = entityTopWorldY/gPanel.TILE_SIZE;
-        int entityBottomRow = entityBottomWorldY/gPanel.TILE_SIZE;
+        int entityLeftCol = entityLeftWorldX/GamePanel.TILE_SIZE;
+        int entityRightCol = entityRightWorldX/GamePanel.TILE_SIZE;
+        int entityTopRow = entityTopWorldY/GamePanel.TILE_SIZE;
+        int entityBottomRow = entityBottomWorldY/GamePanel.TILE_SIZE;
 
         int tileNum1;
         int tileNum2;
 
         switch (entity.direction) {
             case "UP":
-                entityTopRow = (int) ((entityTopWorldY - entity.speed)/gPanel.TILE_SIZE);
+                entityTopRow = (int) ((entityTopWorldY - entity.speed)/GamePanel.TILE_SIZE);
                 tileNum1 = gPanel.tileManager.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gPanel.tileManager.mapTileNum[entityRightCol][entityTopRow];
                 if (gPanel.tileManager.tile[tileNum1].collision == true || gPanel.tileManager.tile[tileNum2].collision == true) {
@@ -37,7 +37,7 @@ public class CollisionChecker {
                 break;
 
             case "DOWN":
-                entityBottomRow = (int) ((entityBottomWorldY + entity.speed)/gPanel.TILE_SIZE);
+                entityBottomRow = (int) ((entityBottomWorldY + entity.speed)/GamePanel.TILE_SIZE);
                 tileNum1 = gPanel.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
                 tileNum2 = gPanel.tileManager.mapTileNum[entityRightCol][entityBottomRow];
                 if (gPanel.tileManager.tile[tileNum1].collision == true || gPanel.tileManager.tile[tileNum2].collision == true) {
@@ -47,7 +47,7 @@ public class CollisionChecker {
             break;
 
             case "RIGHT":
-                entityRightCol = (int) ((entityRightWorldX + entity.speed)/gPanel.TILE_SIZE);
+                entityRightCol = (int) ((entityRightWorldX + entity.speed)/GamePanel.TILE_SIZE);
                 tileNum1 = gPanel.tileManager.mapTileNum[entityRightCol][entityTopRow];
                 tileNum2 = gPanel.tileManager.mapTileNum[entityRightCol][entityBottomRow];
                 if (gPanel.tileManager.tile[tileNum1].collision == true || gPanel.tileManager.tile[tileNum2].collision == true) {
@@ -58,7 +58,7 @@ public class CollisionChecker {
             break;
 
             case "LEFT":
-                entityLeftCol = (int) ((entityLeftWorldX - entity.speed)/gPanel.TILE_SIZE);
+                entityLeftCol = (int) ((entityLeftWorldX - entity.speed)/GamePanel.TILE_SIZE);
                 tileNum1 = gPanel.tileManager.mapTileNum[entityLeftCol][entityTopRow];
                 tileNum2 = gPanel.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
                 if (gPanel.tileManager.tile[tileNum1].collision == true || gPanel.tileManager.tile[tileNum2].collision == true) {

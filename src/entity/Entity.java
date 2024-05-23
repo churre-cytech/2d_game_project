@@ -2,9 +2,7 @@ package entity;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import main.GamePanel;
 
 public class Entity {
@@ -38,7 +36,6 @@ public class Entity {
     public boolean dying = false;
 
     // CHARACTER ATTRIBUTES
-    public int type; // 0 = player, 1 = npc, 2 = monster
     public String name;
     public int speed;
     public int life;
@@ -52,6 +49,18 @@ public class Entity {
     public int coin;
     public Entity currentWeapon;
     public Entity currentShield;
+
+    public String description;
+
+    // TYPE
+    public int type; // 0 = player, 1 = npc, 2 = monster
+    public final int type_player = 0;
+    public final int type_npc = 1;
+    public final int type_monster = 2;
+    public final int type_sword = 3;
+    public final int type_axe = 4;
+    public final int type_shield = 5;
+    public final int type_consumable = 6;
 
     // ITEM ATTRIBUTES
     public int attackValue;
@@ -131,6 +140,7 @@ public class Entity {
 
     public void setAction() {}
     public void damageReaction() {}
+    public void use(Entity entity) {}
 
     public void speak() {
         if (dialoguesLines[dialogueIndex] == null) {

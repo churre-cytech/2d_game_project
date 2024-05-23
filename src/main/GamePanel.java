@@ -25,10 +25,10 @@ public class GamePanel extends Canvas
     public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
 
     // WORLD SETTINGS
-    public final int MAX_WORLD_COL = 50;
-    public final int MAX_WORLD_ROW = 50;
-    public final int WORLD_WIDTH = MAX_WORLD_COL * TILE_SIZE;
-    public final int WORLD_HEIGHT = MAX_WORLD_ROW * TILE_SIZE;
+    public static final int MAX_WORLD_COL = 50;
+    public static final int MAX_WORLD_ROW = 50;
+    public static final int WORLD_WIDTH = MAX_WORLD_COL * TILE_SIZE;
+    public static final int WORLD_HEIGHT = MAX_WORLD_ROW * TILE_SIZE;
 
     private GraphicsContext gc;
     private AnimationTimer gameLoop;
@@ -44,7 +44,7 @@ public class GamePanel extends Canvas
     public CollisionChecker cChecker = new CollisionChecker(this);
 
     // OBJECT
-    public Entity obj[] = new Entity[10];
+    public Entity obj[] = new Entity[15];
     public AssetSetter aSetter = new AssetSetter(this);
 
     // NPC
@@ -119,8 +119,6 @@ public class GamePanel extends Canvas
                     }
                 }
             }
-
-
         }
 
         // PAUSE STATE
@@ -181,6 +179,7 @@ public class GamePanel extends Canvas
 
         ui.render(gc);
 
+        // if ()
     }
 
     

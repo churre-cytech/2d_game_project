@@ -1,9 +1,5 @@
 package main;
 
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
 public class EventHandler {
 
     GamePanel gPanel;
@@ -16,12 +12,12 @@ public class EventHandler {
     public EventHandler(GamePanel gPanel) {
         this.gPanel = gPanel;
 
-        eventRectangle = new EventRectangle[gPanel.MAX_WORLD_COL][gPanel.MAX_WORLD_ROW];
+        eventRectangle = new EventRectangle[GamePanel.MAX_WORLD_COL][GamePanel.MAX_WORLD_ROW];
 
         int col = 0;
         int row = 0;
 
-        while (col < gPanel.MAX_WORLD_COL && row < gPanel.MAX_WORLD_ROW) {
+        while (col < GamePanel.MAX_WORLD_COL && row < GamePanel.MAX_WORLD_ROW) {
             eventRectangle[col][row] = new EventRectangle();
             eventRectangle[col][row].setX(23);
             eventRectangle[col][row].setY(23);
@@ -31,7 +27,7 @@ public class EventHandler {
             eventRectangle[col][row].eventRectDefaultY = (int) eventRectangle[col][row].getY();
 
             col++;
-            if (col == gPanel.MAX_WORLD_COL) {
+            if (col == GamePanel.MAX_WORLD_COL) {
                 col = 0;
                 row++;
             }

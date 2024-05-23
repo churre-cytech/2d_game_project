@@ -12,7 +12,7 @@ public class MON_GreenSlime extends Entity {
         super(gPanel);
 
         name = "Green Slime";
-        type = 2;
+        type = type_monster;
         speed = 1;
         maxLife = 4;
         life = maxLife;
@@ -27,6 +27,10 @@ public class MON_GreenSlime extends Entity {
         solidAreaDefaultY = (int) solidArea.getY();
         
         getImage();
+    }
+
+    public int getMaxLife() {
+        return maxLife;
     }
 
     public void getImage() {

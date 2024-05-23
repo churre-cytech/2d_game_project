@@ -1,12 +1,13 @@
 package entity;
 
+import java.util.ArrayList;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import main.GameKeyHandler;
 import main.GamePanel;
+import object.OBJ_Key;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
 
@@ -18,6 +19,9 @@ public class Player extends Entity {
     public boolean attackCanceled = false;
 
     int hasKey = 0;
+
+    public ArrayList<Entity> inventory = new ArrayList<Entity>();
+    public final int maxInventorySize = 20;
 
     public Player(GamePanel gPanel)
     {
@@ -36,13 +40,14 @@ public class Player extends Entity {
         solidAreaDefaultY = (int) solidArea.getY();
 
         // SWORD -> if I want to increase the range of my attacks, increase theses values !
-        attackArea.setWidth(36);
-        attackArea.setHeight(36);
+        // attackArea.setWidth(36);
+        // attackArea.setHeight(36);
 
 
         setDefaultValues();
         getPlayerImage();
-        getPLayerAttackImage();
+        getPlayerAttackImage();
+        setItems();
     }
 
     public void setDefaultValues()
@@ -63,12 +68,45 @@ public class Player extends Entity {
         defense = getDefense();
     }
 
+    public void setItems() {
+        inventory.add(currentWeapon);
+        inventory.add(currentShield);
+        inventory.add(new OBJ_Key(gPanel));
+        inventory.add(new OBJ_Key(gPanel));
+    }
+
+    public void selectItem() {
+        
+        int indexItem = gPanel.ui.getIndexItemOnSlot();
+
+        if (indexItem < inventory.size()) {
+
+            Entity selectedItem = inventory.get(indexItem);
+
+            if (selectedItem.type == type_sword || selectedItem.type == type_axe) {
+                currentWeapon = selectedItem;
+                attack = getAttack();
+            }
+            if (selectedItem.type == type_shield) {
+                currentShield = selectedItem;
+                defense = getDefense();
+            }
+            if (selectedItem.type == type_consumable) {
+                selectedItem.use(this);
+                inventory.remove(indexItem);
+            }
+        }
+    }
+    
     public int getAttack() {
-        return attack = strength * currentWeapon.attackValue;
+        // return attack = strength * currentWeapon.attackValue;
+        attackArea = currentWeapon.attackArea;
+        return attack = currentWeapon.attackValue;
     }
 
     public int getDefense() {
-        return defense = dexterity * currentShield.defenseValue;
+        // return defense = dexterity * currentShield.defenseValue;
+        return defense = currentShield.defenseValue;
     }
 
     public void getPlayerImage() 
@@ -87,7 +125,7 @@ public class Player extends Entity {
         }
     }
 
-    public void getPLayerAttackImage() {
+    public void getPlayerAttackImage() {
         try {
             attackUp1 = new Image("/player/boy_attack_up_1.png");
             attackUp2 = new Image("/player/boy_attack_up_2.png");
@@ -319,29 +357,42 @@ public class Player extends Entity {
     }
 
     public void pickUpObject(int i) {
+
+        // String objectName = gPanel.obj[i].name;
+        // String text;
+
         
         if (i != 999) {
 
-            // gPanel.obj[i] = null; // delete the object that we touch
-
             String objectName = gPanel.obj[i].name;
+            String text;
 
-            switch (objectName) {
-                case "Key":
-                    hasKey++;
-                    gPanel.obj[i] = null;       
-                    System.out.println("Key : " + hasKey);             
-                    break;
-                case "Door":
-                    if (hasKey > 0) {
-                        gPanel.obj[i] = null;
-                        hasKey--;
-                    }
-                    break;
-                default:
-                    break;
+        if (inventory.size() != maxInventorySize) {
+                inventory.add(gPanel.obj[i]);
+                text = "Got a " + objectName + " !";
             }
+            else {
+                text = "You cannot carry any more !";
+            }
+            // gPanel.ui.addMessage(text);
+            System.out.println(text);
+            gPanel.obj[i] = null;
         } 
+        // switch (objectName) {
+            //     case "Key":
+            //         hasKey++;
+            //         gPanel.obj[i] = null;       
+            //         System.out.println("Key : " + hasKey);             
+            //         break;
+            //     case "Door":
+            //         if (hasKey > 0) {
+            //             gPanel.obj[i] = null;
+            //             hasKey--;
+            //         }
+            //         break;
+            //     default:
+            //         break;
+            // }
     }
 
     public void render(GraphicsContext gc) 

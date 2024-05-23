@@ -65,6 +65,26 @@ public class UI {
         int slotX = slotXStart;
         int slotY = slotYStart;
 
+        // DRAW PLAYER'S ITEM
+        for (int i = 0; i < gPanel.player.inventory.size(); i++) {
+
+            if (gPanel.player.inventory.get(i) == gPanel.player.currentWeapon ||
+                gPanel.player.inventory.get(i) == gPanel.player.currentShield)
+            {
+                gc.setFill(Color.YELLOW);
+                gc.fillRoundRect(slotX, slotY, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE, 10, 10);
+            }
+
+            gc.drawImage(gPanel.player.inventory.get(i).down1, slotX, slotY, GamePanel.TILE_SIZE, GamePanel.TILE_SIZE);
+
+            slotX += GamePanel.TILE_SIZE;
+
+            if (i == 5 || i == 10) {
+                slotX = slotXStart;
+                slotY += GamePanel.TILE_SIZE;
+            }
+        }
+
         // CURSOR
         int cursorX = slotXStart + (GamePanel.TILE_SIZE * slotCol);
         int cursorY = slotYStart + (GamePanel.TILE_SIZE * slotRow);
@@ -133,9 +153,8 @@ public class UI {
         gc.fillText(value, tailX, textY);
         textY += 40;
 
-        value = String.valueOf(gPanel.player.attack);
+        value = String.valueOf(gPanel.player.defense);
         gc.fillText(value, tailX, textY);
-        // textY += 40;
 
         gc.drawImage(gPanel.player.currentWeapon.down1, tailX - 15, textY + 10, 40, 40);
         textY += 40;
@@ -230,4 +249,10 @@ public class UI {
         }
 
     }
+
+    public int getIndexItemOnSlot() {
+        int itemIndex = slotCol + (slotRow * 6);
+        return itemIndex;
+    }
+
 }
