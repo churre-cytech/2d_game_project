@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.ArrayList;
+
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
@@ -50,8 +52,6 @@ public class Entity {
     public Entity currentWeapon;
     public Entity currentShield;
 
-    public String description;
-    public int itemValue;
 
     // TYPE
     public int type; // 0 = player, 1 = npc, 2 = monster
@@ -63,10 +63,21 @@ public class Entity {
     public final int type_shield = 5;
     public final int type_consumable = 6;
     public final int type_pickUpOnly = 7;
+    public final int type_fixItem = 8;
+
+    // INVENTORY
+    public ArrayList<Entity> inventory = new ArrayList<Entity>();
+    public final int maxInventorySize = 6;
+
+    // FOR OPENING DOORS
+    public int hasKey = 0;
 
     // ITEM ATTRIBUTES
     public int attackValue;
     public int defenseValue;
+    public String description;
+    public int itemValue;
+
 
     // COMBAT
     public boolean invincible = false;
@@ -76,7 +87,6 @@ public class Entity {
     // FROM SUPEROBJECT
     public Image image, image2, image3;
     public boolean collision = false;
-
 
     public Entity(GamePanel gPanel) {
         this.gPanel = gPanel;
@@ -147,11 +157,11 @@ public class Entity {
     // ITEM DROP
     public void checkDrop() {}
     public void dropItem(Entity droppedItem) {
-        for (int i = 0; i < gPanel.obj.length; i++) {
-            if (gPanel.obj[i] == null) {
-                gPanel.obj[i] = droppedItem;
-                gPanel.obj[i].worldX = worldX;
-                gPanel.obj[i].worldY = worldY;
+        for (int i = 0; i < gPanel.obj[1].length; i++) {
+            if (gPanel.obj[gPanel.currentMap][i] == null) {
+                gPanel.obj[gPanel.currentMap][i] = droppedItem;
+                gPanel.obj[gPanel.currentMap][i].worldX = worldX;
+                gPanel.obj[gPanel.currentMap][i].worldY = worldY;
                 break;
             }
         }

@@ -28,8 +28,8 @@ public class CollisionChecker {
         switch (entity.direction) {
             case "UP":
                 entityTopRow = (int) ((entityTopWorldY - entity.speed)/GamePanel.TILE_SIZE);
-                tileNum1 = gPanel.tileManager.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = gPanel.tileManager.mapTileNum[entityRightCol][entityTopRow];
+                tileNum1 = gPanel.tileManager.mapTileNum[gPanel.currentMap][entityLeftCol][entityTopRow];
+                tileNum2 = gPanel.tileManager.mapTileNum[gPanel.currentMap][entityRightCol][entityTopRow];
                 if (gPanel.tileManager.tile[tileNum1].collision == true || gPanel.tileManager.tile[tileNum2].collision == true) {
                     entity.collisionOn = true;
                 }
@@ -38,8 +38,8 @@ public class CollisionChecker {
 
             case "DOWN":
                 entityBottomRow = (int) ((entityBottomWorldY + entity.speed)/GamePanel.TILE_SIZE);
-                tileNum1 = gPanel.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
-                tileNum2 = gPanel.tileManager.mapTileNum[entityRightCol][entityBottomRow];
+                tileNum1 = gPanel.tileManager.mapTileNum[gPanel.currentMap][entityLeftCol][entityBottomRow];
+                tileNum2 = gPanel.tileManager.mapTileNum[gPanel.currentMap][entityRightCol][entityBottomRow];
                 if (gPanel.tileManager.tile[tileNum1].collision == true || gPanel.tileManager.tile[tileNum2].collision == true) {
                     entity.collisionOn = true;
                 }
@@ -48,8 +48,8 @@ public class CollisionChecker {
 
             case "RIGHT":
                 entityRightCol = (int) ((entityRightWorldX + entity.speed)/GamePanel.TILE_SIZE);
-                tileNum1 = gPanel.tileManager.mapTileNum[entityRightCol][entityTopRow];
-                tileNum2 = gPanel.tileManager.mapTileNum[entityRightCol][entityBottomRow];
+                tileNum1 = gPanel.tileManager.mapTileNum[gPanel.currentMap][entityRightCol][entityTopRow];
+                tileNum2 = gPanel.tileManager.mapTileNum[gPanel.currentMap][entityRightCol][entityBottomRow];
                 if (gPanel.tileManager.tile[tileNum1].collision == true || gPanel.tileManager.tile[tileNum2].collision == true) {
                     entity.collisionOn = true;
                 }
@@ -59,8 +59,8 @@ public class CollisionChecker {
 
             case "LEFT":
                 entityLeftCol = (int) ((entityLeftWorldX - entity.speed)/GamePanel.TILE_SIZE);
-                tileNum1 = gPanel.tileManager.mapTileNum[entityLeftCol][entityTopRow];
-                tileNum2 = gPanel.tileManager.mapTileNum[entityLeftCol][entityBottomRow];
+                tileNum1 = gPanel.tileManager.mapTileNum[gPanel.currentMap][entityLeftCol][entityTopRow];
+                tileNum2 = gPanel.tileManager.mapTileNum[gPanel.currentMap][entityLeftCol][entityBottomRow];
                 if (gPanel.tileManager.tile[tileNum1].collision == true || gPanel.tileManager.tile[tileNum2].collision == true) {
                     entity.collisionOn = true;
                 }
@@ -76,16 +76,16 @@ public class CollisionChecker {
             
         int index = 999; 
 
-        for (int i = 0; i < gPanel.obj.length; i++) {
+        for (int i = 0; i < gPanel.obj[1].length; i++) {
 
-            if (gPanel.obj[i] != null) {
+            if (gPanel.obj[gPanel.currentMap][i] != null) {
                 // get entity solid area position
                 entity.solidArea.setX(entity.worldX + entity.solidArea.getX());
                 entity.solidArea.setY(entity.worldY + entity.solidArea.getY());
 
                 // get object solid area position 
-                gPanel.obj[i].solidArea.setX(gPanel.obj[i].worldX + gPanel.obj[i].solidArea.getX());
-                gPanel.obj[i].solidArea.setY(gPanel.obj[i].worldY + gPanel.obj[i].solidArea.getY());
+                gPanel.obj[gPanel.currentMap][i].solidArea.setX(gPanel.obj[gPanel.currentMap][i].worldX + gPanel.obj[gPanel.currentMap][i].solidArea.getX());
+                gPanel.obj[gPanel.currentMap][i].solidArea.setY(gPanel.obj[gPanel.currentMap][i].worldY + gPanel.obj[gPanel.currentMap][i].solidArea.getY());
 
                 switch (entity.direction) {
                     case "UP":
@@ -103,8 +103,8 @@ public class CollisionChecker {
                     default:
                         break;
                 }
-                if (entity.solidArea.getBoundsInLocal().intersects(gPanel.obj[i].solidArea.getBoundsInLocal())) {
-                    if (gPanel.obj[i].collision == true) {
+                if (entity.solidArea.getBoundsInLocal().intersects(gPanel.obj[gPanel.currentMap][i].solidArea.getBoundsInLocal())) {
+                    if (gPanel.obj[gPanel.currentMap][i].collision == true) {
                         entity.collisionOn = true;
                     }
                     if (player == true) {
@@ -115,28 +115,28 @@ public class CollisionChecker {
 
                 entity.solidArea.setX(entity.solidAreaDefaultX);
                 entity.solidArea.setY(entity.solidAreaDefaultY);
-                gPanel.obj[i].solidArea.setX(gPanel.obj[i].solidAreaDefaultX);
-                gPanel.obj[i].solidArea.setY(gPanel.obj[i].solidAreaDefaultY);
+                gPanel.obj[gPanel.currentMap][i].solidArea.setX(gPanel.obj[gPanel.currentMap][i].solidAreaDefaultX);
+                gPanel.obj[gPanel.currentMap][i].solidArea.setY(gPanel.obj[gPanel.currentMap][i].solidAreaDefaultY);
             }
         }
         
         return index;
     }
 
-    public int checkEntity(Entity entity, Entity[] target) {
+    public int checkEntity(Entity entity, Entity[][] target) {
 
         int index = 999; 
 
-        for (int i = 0; i < target.length; i++) {
+        for (int i = 0; i < target[1].length; i++) {
 
-            if (target[i] != null) {
+            if (target[gPanel.currentMap][i] != null) {
                 // get entity solid area position
                 entity.solidArea.setX(entity.worldX + entity.solidArea.getX());
                 entity.solidArea.setY(entity.worldY + entity.solidArea.getY());
 
                 // get target solid area position 
-                target[i].solidArea.setX(target[i].worldX + target[i].solidArea.getX());
-                target[i].solidArea.setY(target[i].worldY + target[i].solidArea.getY());
+                target[gPanel.currentMap][i].solidArea.setX(target[gPanel.currentMap][i].worldX + target[gPanel.currentMap][i].solidArea.getX());
+                target[gPanel.currentMap][i].solidArea.setY(target[gPanel.currentMap][i].worldY + target[gPanel.currentMap][i].solidArea.getY());
 
                 switch (entity.direction) {
                     case "UP":
@@ -154,8 +154,8 @@ public class CollisionChecker {
                     default:
                         break;
                 }
-                if (entity.solidArea.getBoundsInLocal().intersects(target[i].solidArea.getBoundsInLocal())) {
-                    if (target[i] != entity) {
+                if (entity.solidArea.getBoundsInLocal().intersects(target[gPanel.currentMap][i].solidArea.getBoundsInLocal())) {
+                    if (target[gPanel.currentMap][i] != entity) {
                         entity.collisionOn = true;
                         index = i;
                     }
@@ -164,8 +164,8 @@ public class CollisionChecker {
 
                 entity.solidArea.setX(entity.solidAreaDefaultX);
                 entity.solidArea.setY(entity.solidAreaDefaultY);
-                target[i].solidArea.setX(target[i].solidAreaDefaultX);
-                target[i].solidArea.setY(target[i].solidAreaDefaultY);
+                target[gPanel.currentMap][i].solidArea.setX(target[gPanel.currentMap][i].solidAreaDefaultX);
+                target[gPanel.currentMap][i].solidArea.setY(target[gPanel.currentMap][i].solidAreaDefaultY);
             }
         }
         

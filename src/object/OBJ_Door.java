@@ -11,8 +11,8 @@ public class OBJ_Door extends Entity {
     public OBJ_Door(GamePanel gPanel) {
         super(gPanel);
 
+        type = type_fixItem;
         name = "Door";
-
         try {
             down1 = new Image("/object/door.png");
             
@@ -22,4 +22,6 @@ public class OBJ_Door extends Entity {
 
         collision = true;
     }
+
+
 }

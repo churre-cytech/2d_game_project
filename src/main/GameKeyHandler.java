@@ -44,8 +44,27 @@ public class GameKeyHandler implements EventHandler<KeyEvent> {
                         if (gPanel.gameState == gPanel.playState) {
                             moveUp = true;
                         } else if (gPanel.gameState == gPanel.characterState) {
-                            if (gPanel.ui.slotRow != 0) {
-                                gPanel.ui.slotRow--;
+                            if (gPanel.ui.playerSlotRow != 0) {
+                                gPanel.ui.playerSlotRow--;
+                            }
+                        } else if (gPanel.gameState == gPanel.tradeState) {
+                            
+                            if (gPanel.ui.subState == 0) {
+                                gPanel.ui.commandNum--;
+                                if (gPanel.ui.commandNum < 0) {
+                                    gPanel.ui.commandNum = 2;
+                                }
+
+                            // BUY STATE (only cursor for npc)
+                            } else if (gPanel.ui.subState == 1) {
+                                if (gPanel.ui.npcSlotRow != 0) {
+                                    gPanel.ui.npcSlotRow--;
+                                }
+                            // SELL STATE 
+                            } else if (gPanel.ui.subState == 2) {
+                                if (gPanel.ui.playerSlotRow != 0) {
+                                    gPanel.ui.playerSlotRow--;
+                                }
                             }
                         }
                         break;
@@ -54,8 +73,27 @@ public class GameKeyHandler implements EventHandler<KeyEvent> {
                         if (gPanel.gameState == gPanel.playState) {
                             moveDown = true;
                         } else if (gPanel.gameState == gPanel.characterState) {
-                            if (gPanel.ui.slotRow != 3) {
-                                gPanel.ui.slotRow++;
+                            if (gPanel.ui.playerSlotRow != 3) {
+                                gPanel.ui.playerSlotRow++;
+                            }
+                        } else if (gPanel.gameState == gPanel.tradeState) {
+                            
+                            if (gPanel.ui.subState == 0) {
+                                gPanel.ui.commandNum++;
+                                if (gPanel.ui.commandNum > 2) {
+                                    gPanel.ui.commandNum = 0;
+                                }
+
+                            // BUY STATE (only cursor for npc)
+                            } else if (gPanel.ui.subState == 1) {
+                                if (gPanel.ui.npcSlotRow != 3) {
+                                    gPanel.ui.npcSlotRow++;
+                                }
+                            // SELL STATE
+                            } else if (gPanel.ui.subState == 2) {
+                                if (gPanel.ui.playerSlotRow != 3) {
+                                    gPanel.ui.playerSlotRow++;
+                                }
                             }
                         }
                         break;
@@ -64,8 +102,21 @@ public class GameKeyHandler implements EventHandler<KeyEvent> {
                         if (gPanel.gameState == gPanel.playState) {
                             moveLeft = true;
                         } else if (gPanel.gameState == gPanel.characterState) {
-                            if (gPanel.ui.slotCol != 0) {
-                                gPanel.ui.slotCol--;
+                            if (gPanel.ui.playerSlotCol != 0) {
+                                gPanel.ui.playerSlotCol--;
+                            }
+                        } else if (gPanel.gameState == gPanel.tradeState) {
+                            
+                            // BUY STATE (only cursor for npc)
+                            if (gPanel.ui.subState == 1) {
+                                if (gPanel.ui.npcSlotCol != 0) {
+                                    gPanel.ui.npcSlotCol--;
+                                }
+                            // SELL STATE
+                            } else if (gPanel.ui.subState == 2) {
+                                if (gPanel.ui.playerSlotCol != 0) {
+                                    gPanel.ui.playerSlotCol--;
+                                }
                             }
                         }
                         break;
@@ -74,8 +125,21 @@ public class GameKeyHandler implements EventHandler<KeyEvent> {
                         if (gPanel.gameState == gPanel.playState) {
                             moveRight = true;
                         } else if (gPanel.gameState == gPanel.characterState) {
-                            if (gPanel.ui.slotCol != 5) {
-                                gPanel.ui.slotCol++;
+                            if (gPanel.ui.playerSlotCol != 5) {
+                                gPanel.ui.playerSlotCol++;
+                            }
+                        } else if (gPanel.gameState == gPanel.tradeState) {
+
+                            // BUY STATE (only cursor for npc)
+                            if (gPanel.ui.subState == 1) {
+                                if (gPanel.ui.npcSlotCol != 5) {
+                                    gPanel.ui.npcSlotCol++;
+                                }
+                            // SELL STATE
+                            } else if (gPanel.ui.subState == 2) {
+                                if (gPanel.ui.playerSlotCol != 5) {
+                                    gPanel.ui.playerSlotCol++;
+                                }
                             }
                         }
                         break;
@@ -100,7 +164,15 @@ public class GameKeyHandler implements EventHandler<KeyEvent> {
                             enterPressed = true;
                         } else if (gPanel.gameState == gPanel.characterState) {
                             gPanel.player.selectItem();
+                        } else if (gPanel.gameState == gPanel.tradeState) {
+                            enterPressed = true;
+                        } else if (gPanel.gameState == gPanel.gameOverState) {
+                            if (gPanel.ui.commandNum == 0) {
+                                gPanel.gameState = gPanel.playState;
+                                gPanel.retry();
+                            }
                         }
+
                         break;
                     case T:
                         if (showTextDebug == false) {
@@ -110,6 +182,14 @@ public class GameKeyHandler implements EventHandler<KeyEvent> {
                             showTextDebug = false;
                         }
                         break;
+                    case ESCAPE:
+                        if (gPanel.gameState == gPanel.tradeState) {
+                            if (gPanel.ui.subState == 1) {
+                                gPanel.ui.subState = 0;
+                            } else if (gPanel.ui.subState == 2) {
+                                gPanel.ui.subState = 0;
+                            }
+                        } 
                     default:
                         break;
                 }

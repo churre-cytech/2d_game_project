@@ -12,16 +12,17 @@ public class TileManager {
 
     GamePanel gPanel;
     public Tile[] tile;
-    public int mapTileNum[][];
+    public int mapTileNum[][][];
 
     public TileManager(GamePanel gPanel) {
         this.gPanel = gPanel;
 
         tile = new Tile[10];
-        mapTileNum = new int[GamePanel.WORLD_WIDTH][GamePanel.WORLD_HEIGHT];
+        mapTileNum = new int[GamePanel.MAX_MAP][GamePanel.MAX_WORLD_COL][GamePanel.MAX_WORLD_ROW];
 
         getTileImage();
-        loadMap("/map/world01.txt");
+        loadMap("/map/world01.txt", 0);
+        loadMap("/map/world02.txt", 1); 
     }
 
     public void getTileImage() {
@@ -49,13 +50,21 @@ public class TileManager {
             tile[5] = new Tile();
             tile[5].image = new Image("/tile/sand.png");
 
+            tile[6] = new Tile();
+            tile[6].image = new Image("/tile/hut.png");
+            tile[6].collision = true;
+
+            tile[7] = new Tile();
+            tile[7].image = new Image("/tile/table.png");
+            tile[7].collision = true;
+            
             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void loadMap(String filePath) {
+    public void loadMap(String filePath, int map) {
         try {
             InputStream is = getClass().getResourceAsStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -69,7 +78,7 @@ public class TileManager {
                     String numbers[] = line.split(" ");
                     int num = Integer.parseInt(numbers[col]);
 
-                    mapTileNum[col][row] = num;
+                    mapTileNum[map][col][row] = num;
                     col++;
                 }
                 if (col == GamePanel.MAX_WORLD_COL) {
@@ -92,7 +101,7 @@ public class TileManager {
 
         while (worldCol < GamePanel.MAX_WORLD_COL && worldRow < GamePanel.MAX_WORLD_ROW) {
 
-            int tileNum = mapTileNum[worldCol][worldRow];
+            int tileNum = mapTileNum[gPanel.currentMap][worldCol][worldRow];
 
             int worldX = worldCol * GamePanel.TILE_SIZE;
             int worldY = worldRow * GamePanel.TILE_SIZE;

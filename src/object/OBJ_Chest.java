@@ -11,14 +11,16 @@ public class OBJ_Chest extends Entity {
     public OBJ_Chest(GamePanel gPanel) {
         super(gPanel);
         
+        type = type_fixItem;
         name = "Chest";
-
         try {
             down1 = new Image("/object/chest.png");
             
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        collision = true;
     }
 
 }

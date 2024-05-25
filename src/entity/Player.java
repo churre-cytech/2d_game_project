@@ -18,11 +18,6 @@ public class Player extends Entity {
 
     public boolean attackCanceled = false;
 
-    int hasKey = 0;
-
-    public ArrayList<Entity> inventory = new ArrayList<Entity>();
-    public final int maxInventorySize = 20;
-
     public Player(GamePanel gPanel)
     {
         super(gPanel);
@@ -39,11 +34,6 @@ public class Player extends Entity {
         solidAreaDefaultX = (int) solidArea.getX();
         solidAreaDefaultY = (int) solidArea.getY();
 
-        // SWORD -> if I want to increase the range of my attacks, increase theses values !
-        // attackArea.setWidth(36);
-        // attackArea.setHeight(36);
-
-
         setDefaultValues();
         getPlayerImage();
         getPlayerAttackImage();
@@ -52,8 +42,14 @@ public class Player extends Entity {
 
     public void setDefaultValues()
     {
+        // SPAWN MAP 0
         worldX = GamePanel.TILE_SIZE * 23;
         worldY = GamePanel.TILE_SIZE * 21;
+
+        // SPAWN MAP 1
+        // worldX = GamePanel.TILE_SIZE * 23;
+        // worldY = GamePanel.TILE_SIZE * 11;
+
         speed = 5;
         direction = "DOWN";
 
@@ -69,16 +65,30 @@ public class Player extends Entity {
         defense = getDefense();
     }
 
+    public void setDefaultPositions() {
+
+        worldX = GamePanel.TILE_SIZE * 23;
+        worldY = GamePanel.TILE_SIZE * 21;
+        direction = "DOWN";
+    }
+
+    public void restoreLife() {
+        life = maxLife;
+        invincible = false;
+    }
+
     public void setItems() {
+
+        inventory.clear();
         inventory.add(currentWeapon);
         inventory.add(currentShield);
-        inventory.add(new OBJ_Key(gPanel));
-        inventory.add(new OBJ_Key(gPanel));
+        // inventory.add(new OBJ_Key(gPanel));
+        // inventory.add(new OBJ_Key(gPanel));
     }
 
     public void selectItem() {
         
-        int indexItem = gPanel.ui.getIndexItemOnSlot();
+        int indexItem = gPanel.ui.getIndexItemOnSlot(gPanel.ui.playerSlotCol, gPanel.ui.playerSlotRow);
 
         if (indexItem < inventory.size()) {
 
@@ -210,11 +220,18 @@ public class Player extends Entity {
             spriteCounter++;
             if (spriteCounter > 12) 
             {
-                if (spriteNum == 1)
+                if (spriteNum == 1) {
                     spriteNum = 2;
-                else if (spriteNum == 2)
+                }
+                else if (spriteNum == 2) {
                     spriteNum = 1;
+                }
                 spriteCounter = 0;
+            }
+
+            // GAME OVER BY DEATH
+            if (life <= 0) {
+                gPanel.gameState = gPanel.gameOverState;
             }
         }
 
@@ -289,7 +306,7 @@ public class Player extends Entity {
 
         if (monsterIndex != 999) {
 
-            int damage = gPanel.monster[monsterIndex].attack - defense;
+            int damage = gPanel.monster[gPanel.currentMap][monsterIndex].attack - defense;
             if (damage < 0) {
                 damage = 0;
             }
@@ -307,19 +324,19 @@ public class Player extends Entity {
         if (i != 999) {
             System.out.println("Hit !");
 
-            if (gPanel.monster[i].invincible == false) {
+            if (gPanel.monster[gPanel.currentMap][i].invincible == false) {
 
-                int damage = attack - gPanel.monster[i].defense;
+                int damage = attack - gPanel.monster[gPanel.currentMap][i].defense;
                 if (damage < 0) {
                     damage = 0;
                 }
 
-                gPanel.monster[i].life -= damage;
-                gPanel.monster[i].invincible = true;
-                gPanel.monster[i].damageReaction();
+                gPanel.monster[gPanel.currentMap][i].life -= damage;
+                gPanel.monster[gPanel.currentMap][i].invincible = true;
+                gPanel.monster[gPanel.currentMap][i].damageReaction();
 
-                if (gPanel.monster[i].life <= 0) {
-                    gPanel.monster[i].alive = false;
+                if (gPanel.monster[gPanel.currentMap][i].life <= 0) {
+                    gPanel.monster[gPanel.currentMap][i].alive = false;
                 }
             }
         } else {
@@ -333,76 +350,120 @@ public class Player extends Entity {
         if (gPanel.keyHandler.isEnterPressed() == true) {
 
             if (i != 999) {
+
+                // DEBUG
                 // System.out.println("You are hitting some NPC, press enter to speak with him !");
+                // System.out.println(i);
+
                 attackCanceled = true;
                 gPanel.gameState = gPanel.dialogueState;
-                gPanel.npc[i].speak();
+                gPanel.npc[gPanel.currentMap][i].speak();
             } else {
                     attacking = true;
-            }
-
-        }
-
-
-        if (i != 999) {
-            // System.out.println("You are hitting some NPC, press enter to speak with him !");
-            if (gPanel.keyHandler.isEnterPressed() == true) {
-                gPanel.gameState = gPanel.dialogueState;
-                gPanel.npc[i].speak();
-            }
-        } else {
-            if (gPanel.keyHandler.isEnterPressed() == true) {
-                attacking = true;
             }
         }
     }
 
     public void pickUpObject(int i) {
+
+        String objName;
+        String text;
         
-        if (i != 999) {
+        if (i != 999) { 
 
-            String objectName = gPanel.obj[i].name;
-            String text;
 
-            if (gPanel.obj[i].type == type_pickUpOnly) {
-                gPanel.obj[i].use(this);
-                gPanel.obj[i] = null;
-            } else {
-
-                if (inventory.size() != maxInventorySize) {
-                    inventory.add(gPanel.obj[i]);
-                    text = "Got a " + objectName + " !";
+            if (gPanel.obj[gPanel.currentMap][i].type == type_pickUpOnly) {
+                gPanel.obj[gPanel.currentMap][i].use(this);
+                gPanel.obj[gPanel.currentMap][i] = null;
+            } else if (gPanel.obj[gPanel.currentMap][i].type == type_fixItem) {
+                objName = gPanel.obj[gPanel.currentMap][i].name;
+                switch (objName) {
+                    case "Door":
+                        if (hasKey > 0) {
+                            gPanel.obj[gPanel.currentMap][i] = null;
+                            hasKey--;
+                        } else {
+                            System.out.println("Vous avez besoin d'une clé !");
+                        }
+                        break;
+                    case "Chest":
+                        System.out.println("Vous êtes face à un coffre !");
+                        break;
+                    default:
+                        break;
                 }
-                else {
-                    text = "You cannot carry any more !";
-                }
-                System.out.println(text);
-                gPanel.obj[i] = null;
-
             }
 
-        } 
+        }
+    }
 
 
+                // String objName = gPanel.obj[gPanel.currentMap][i].name;
+            // String text;
 
-        // switch (objectName) {
-        //     case "Key":
-        //         hasKey++;
-        //         gPanel.obj[i] = null;       
-        //         System.out.println("Key : " + hasKey);             
-        //         break;
-        //     case "Door":
-        //         if (hasKey > 0) {
-        //             gPanel.obj[i] = null;
-        //             hasKey--;
-        //         }
-        //         break;
-        //     default:
-        //         break;
+            // if (gPanel.obj[gPanel.currentMap][i].type == type_pickUpOnly) {
+            //     gPanel.obj[gPanel.currentMap][i].use(this);
+            //     System.out.println(type_pickUpOnly);
+            //     System.out.println(gPanel.obj[gPanel.currentMap][i].name);
+            //     System.out.println(gPanel.obj[gPanel.currentMap][i].type);
+            //     gPanel.obj[gPanel.currentMap][i] = null;
+            // } else if (gPanel.obj[gPanel.currentMap][i].type == type_pickUpOnly) {
+
+            // }
+
+            // if (gPanel.obj[gPanel.currentMap][i])
+
+
+            // if (gPanel.obj[gPanel.currentMap][i].type == type_pickUpOnly) {
+            //     gPanel.obj[gPanel.currentMap][i].use(this);
+            //     gPanel.obj[gPanel.currentMap][i] = null;
+
+            // }
+            
+            
+    // else if (gPanel.obj[gPanel.currentMap][i].type == type_fixItem) {
+    //     // DEFINE ALL THE FIX ITEMS
+    //     switch (objName) {
+    //         case "Door":
+    //             if (hasKey > 0) {
+    //                 gPanel.obj[i] = null;
+    //                 hasKey--;
+    //             }
+    //             break;
+    //         // TODO add "Chest"
+    //         default:
+    //             break;
+    //     }
+    // }
+
+            // TODO review
+
+            // String objectName = gPanel.obj[gPanel.currentMap][i].name;
+            // String text;
+
+            // if (gPanel.obj[gPanel.currentMap][i].type == type_pickUpOnly) {
+            //     gPanel.obj[gPanel.currentMap][i].use(this);
+            //     gPanel.obj[gPanel.currentMap][i] = null;
+            // } 
+            //     if (inventory.size() <= maxInventorySize) {
+            //         inventory.add(gPanel.obj[gPanel.currentMap][i]);
+            //         text = "Got a " + objectName + " !";
+            //         gPanel.obj[gPanel.currentMap][i] = null;
+            //     }
+            //     else {
+            //         text = "Votre inventaire est plein !";
+            //     }
+
+            //     System.out.println(text);
+
+
+        // } 
+
+
+        // TODO
         // }
 
 
-    }
 
     public void render(GraphicsContext gc) 
     {

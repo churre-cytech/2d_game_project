@@ -28,6 +28,10 @@ public class GamePanel extends Canvas
     // WORLD SETTINGS
     public static final int MAX_WORLD_COL = 50;
     public static final int MAX_WORLD_ROW = 50;
+    public static final int MAX_MAP = 10;
+    public int currentMap = 0;
+
+
     public static final int WORLD_WIDTH = MAX_WORLD_COL * TILE_SIZE;
     public static final int WORLD_HEIGHT = MAX_WORLD_ROW * TILE_SIZE;
 
@@ -44,15 +48,17 @@ public class GamePanel extends Canvas
 
     public CollisionChecker cChecker = new CollisionChecker(this);
 
-    // OBJECT
-    public Entity obj[] = new Entity[20];
+    // SETTER
     public AssetSetter aSetter = new AssetSetter(this);
 
+    // OBJECT
+    public Entity obj[][] = new Entity[MAX_MAP][20];
+
     // NPC
-    public Entity npc[] = new Entity[10];
+    public Entity npc[][] = new Entity[MAX_MAP][10];
 
     // MONSTER
-    public Entity monster[] = new Entity[10];
+    public Entity monster[][] = new Entity[MAX_MAP][10];
 
     // FOR THE DRAWING ORDER
     ArrayList<Entity> entityList = new ArrayList<Entity>();
@@ -63,6 +69,8 @@ public class GamePanel extends Canvas
     public final int pauseState = 2;
     public final int dialogueState = 3;
     public final int characterState = 4;
+    public final int tradeState = 5;
+    public final int gameOverState = 6;
 
     public GamePanel()
     {
@@ -80,6 +88,17 @@ public class GamePanel extends Canvas
         aSetter.setNPC();
         aSetter.setMonster();
         gameState = playState;
+    }
+
+    public void retry() {
+
+        player.setDefaultValues();
+        player.setDefaultPositions();
+        player.restoreLife();
+        player.setItems();
+        aSetter.setObject();
+        aSetter.setNPC();
+        aSetter.setMonster();
     }
 
     public void startGameLoop()
@@ -105,19 +124,19 @@ public class GamePanel extends Canvas
 
             player.update(keyHandler);
 
-            for (int i = 0; i < npc.length; i++) {
-                if (npc[i] != null) {
-                    npc[i].update();
+            for (int i = 0; i < npc[1].length; i++) {
+                if (npc[currentMap][i] != null) {
+                    npc[currentMap][i].update();
                 }
             }
 
-            for (int i = 0; i < monster.length; i++) {
-                if (monster[i] != null) {
-                    if (monster[i].alive == true) {
-                        monster[i].update();
+            for (int i = 0; i < monster[1].length; i++) {
+                if (monster[currentMap][i] != null) {
+                    if (monster[currentMap][i].alive == true) {
+                        monster[currentMap][i].update();
                     } else {
-                        monster[i].checkDrop();
-                        monster[i] = null;
+                        monster[currentMap][i].checkDrop();
+                        monster[currentMap][i] = null;
                     }
                 }
             }
@@ -142,21 +161,21 @@ public class GamePanel extends Canvas
         // MANAGING THE ENTITIES FOR THE RENDER ORDER
         entityList.add(player);
 
-        for (int i = 0; i < npc.length; i++) {
-            if (npc[i] != null) {
-                entityList.add(npc[i]);
+        for (int i = 0; i < npc[1].length; i++) {
+            if (npc[currentMap][i] != null) {
+                entityList.add(npc[currentMap][i]);
             }
         }
 
-        for (int i = 0; i < monster.length; i++) {
-            if (monster[i] != null) {
-                entityList.add(monster[i]);
+        for (int i = 0; i < monster[1].length; i++) {
+            if (monster[currentMap][i] != null) {
+                entityList.add(monster[currentMap][i]);
             }
         }
 
-        for (int i = 0; i < obj.length; i++) {
-            if (obj[i] != null) {
-                entityList.add(obj[i]);
+        for (int i = 0; i < obj[1].length; i++) {
+            if (obj[currentMap][i] != null) {
+                entityList.add(obj[currentMap][i]);
             }
         }
 
