@@ -17,7 +17,7 @@ public class OBJ_Axe extends Entity {
             e.printStackTrace();
         }
 
-        attackValue = 2;
+        attackValue = 4;
         attackArea.setWidth(50);
         attackArea.setHeight(50);
     }

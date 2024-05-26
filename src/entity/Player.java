@@ -1,14 +1,11 @@
 package entity;
 
-import java.util.ArrayList;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import main.GameKeyHandler;
 import main.GamePanel;
-import object.OBJ_Heart;
-import object.OBJ_Key;
 import object.OBJ_Potion_Red;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
@@ -325,7 +322,7 @@ public class Player extends Entity {
 
         
         if (i != 999) {
-            System.out.println("Hit !");
+
 
             if (gPanel.monster[gPanel.currentMap][i].invincible == false) {
 
@@ -341,9 +338,10 @@ public class Player extends Entity {
                 if (gPanel.monster[gPanel.currentMap][i].life <= 0) {
                     gPanel.monster[gPanel.currentMap][i].alive = false;
                 }
+
+                System.out.println("PV de " + gPanel.monster[gPanel.currentMap][i].name + " : " + gPanel.monster[gPanel.currentMap][i].life + ".");
             }
         } else {
-            System.out.println("Miss !");
         }
     }
 

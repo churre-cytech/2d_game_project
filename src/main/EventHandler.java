@@ -1,7 +1,5 @@
 package main;
 
-import entity.Entity;
-
 public class EventHandler {
 
     GamePanel gPanel;
@@ -59,7 +57,7 @@ public class EventHandler {
         }
 
         if (canTouchEvent == true) {
-            if (hit(0, 26, 16, "ANY") == true) {damagePit(26, 16, gPanel.dialogueState);}
+            if (hit(0, 31, 13, "ANY") == true) {damagePit(26, 16, gPanel.dialogueState);}
             else if (hit(0, 23, 7, "ANY") == true) {healingPool(23, 7, gPanel.dialogueState);}
             else if (hit(0, 17, 45, "ANY") == true) {teleport(1, 23, 11);}
             else if (hit(1, 23, 11, "ANY") == true) {teleport(0, 17, 45);}
@@ -102,7 +100,7 @@ public class EventHandler {
 
     public void damagePit(int col, int row, int gameState) {
         gPanel.gameState = gameState;
-        gPanel.ui.currentDialogue = "You fall into a pit !";
+        gPanel.ui.currentDialogue = "Tu es tombé dans un piège, -1 PV !";
         gPanel.player.life -= 1;
         // eventRectangle[col][row].eventDone = true;
         canTouchEvent = false;
@@ -114,7 +112,7 @@ public class EventHandler {
         if (gPanel.keyHandler.enterPressed == true) {
             gPanel.gameState = gameState;
             gPanel.player.attackCanceled = true;
-            gPanel.ui.currentDialogue = "You drink the water.\nYour life has been recovered !";
+            gPanel.ui.currentDialogue = "Tu as bu l'eau de la rivière,\n tes PVs sont au max !";
             gPanel.player.life = gPanel.player.maxLife;
         }
     }

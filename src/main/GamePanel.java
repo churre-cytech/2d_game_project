@@ -144,7 +144,6 @@ public class GamePanel extends Canvas
 
         // PAUSE STATE
         if (gameState == pauseState) {
-            // TODO
         }
         
     }

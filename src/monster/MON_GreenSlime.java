@@ -7,7 +7,6 @@ import javafx.scene.image.Image;
 import main.GamePanel;
 import object.OBJ_Bronze_Coin;
 import object.OBJ_Heart;
-import object.OBJ_Key;
 
 public class MON_GreenSlime extends Entity {
 
@@ -34,10 +33,6 @@ public class MON_GreenSlime extends Entity {
         solidAreaDefaultY = (int) solidArea.getY();
         
         getImage();
-    }
-
-    public int getMaxLife() {
-        return maxLife;
     }
 
     public void getImage() {

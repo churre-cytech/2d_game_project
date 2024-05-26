@@ -38,9 +38,10 @@ public class NPC_OldMan extends Entity {
     public void setDialogues() {
         
         dialoguesLines[0] = "Bienvenue, jeune aventurier !";
-        dialoguesLines[1] = "Tu es venu chercher le trésor c'est bien cela ?";
-        dialoguesLines[2] = "Je suis un grand sorcier, mais ne t'inquiète pas\nje ne te ferai pas de mal...";
-        dialoguesLines[3] = "Je te souhaite bon courage dans ta quête !";
+        dialoguesLines[1] = "On m'a dit qu'un trésor était caché pas très loin !";
+        dialoguesLines[2] = "Fais attention les monstres sont redoutables !";
+        dialoguesLines[3] = "Trouver les clefs et le trésor sera à toi !";
+        dialoguesLines[4] = "Je te souhaite bon courage dans ta quête !";
     }
 
     public void setAction() {

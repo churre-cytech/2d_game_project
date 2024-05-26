@@ -17,10 +17,12 @@ public class OBJ_Sword_Normal extends Entity {
             e.printStackTrace();
         }
 
-        attackValue = 1;
+        attackValue = 2;
         attackArea.setWidth(36);
         attackArea.setHeight(36);
 
     }
+
+    
 
 }

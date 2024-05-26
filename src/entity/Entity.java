@@ -67,7 +67,7 @@ public class Entity {
 
     // INVENTORY
     public ArrayList<Entity> inventory = new ArrayList<Entity>();
-    public final int maxInventorySize = 5;
+    public final int maxInventorySize = 10;
 
     // FOR OPENING DOORS
     public int hasKey = 0;
