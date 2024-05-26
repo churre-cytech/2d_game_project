@@ -62,7 +62,7 @@ public class Player extends Entity {
         currentShield = new OBJ_Shield_Wood(gPanel);
         attack = getAttack();
         defense = getDefense();
-        hasKey = 5; // TODO reset to 0 after debug
+        hasKey = 0;
     }
 
     public void setDefaultPositions() {
