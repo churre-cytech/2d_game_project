@@ -321,6 +321,8 @@ public class UI {
         textY += lineHeight;
         gc.fillText("Defense", textX, textY);
         textY += lineHeight;
+        gc.fillText("Key(s)", textX, textY);
+        textY += lineHeight;
         gc.fillText("Current Weapon", textX, textY);
         textY += lineHeight;
         gc.fillText("Current Shield", textX, textY);
@@ -331,6 +333,8 @@ public class UI {
         textY += lineHeight;
         gc.fillText("attackArea.height", textX, textY);
         textY += lineHeight;
+
+
 
 
         // VALUES
@@ -363,11 +367,25 @@ public class UI {
         gc.fillText(value, tailX, textY);
         textY += lineHeight;
 
-        gc.drawImage(gPanel.player.currentWeapon.down1, tailX - 15, textY - 30, 40, 40);
+        value = String.valueOf(gPanel.player.hasKey);
+        gc.fillText(value, tailX, textY);
         textY += lineHeight;
 
-        gc.drawImage(gPanel.player.currentShield.down1, tailX - 15, textY - 30, 40, 40);
-        textY += lineHeight;
+        if (gPanel.player.currentWeapon == null) {
+            gc.fillText("No weapon", tailX, textY);
+            textY += lineHeight;
+        } else {
+            gc.drawImage(gPanel.player.currentWeapon.down1, tailX - 15, textY - 30, 40, 40);
+            textY += lineHeight;
+        }
+
+        if (gPanel.player.currentShield == null) {
+            gc.fillText("No shield", tailX, textY);
+            textY += lineHeight;
+        } else {
+            gc.drawImage(gPanel.player.currentShield.down1, tailX - 15, textY - 30, 40, 40);
+            textY += lineHeight;
+        }
 
         value = String.valueOf(gPanel.player.attackArea.getWidth());
         gc.fillText(value, tailX - 15, textY);

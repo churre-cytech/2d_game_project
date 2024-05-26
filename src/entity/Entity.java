@@ -67,7 +67,7 @@ public class Entity {
 
     // INVENTORY
     public ArrayList<Entity> inventory = new ArrayList<Entity>();
-    public final int maxInventorySize = 6;
+    public final int maxInventorySize = 5;
 
     // FOR OPENING DOORS
     public int hasKey = 0;
@@ -77,7 +77,6 @@ public class Entity {
     public int defenseValue;
     public String description;
     public int itemValue;
-
 
     // COMBAT
     public boolean invincible = false;

@@ -7,7 +7,9 @@ import javafx.scene.image.Image;
 import javafx.scene.shape.Rectangle;
 import main.GameKeyHandler;
 import main.GamePanel;
+import object.OBJ_Heart;
 import object.OBJ_Key;
+import object.OBJ_Potion_Red;
 import object.OBJ_Shield_Wood;
 import object.OBJ_Sword_Normal;
 
@@ -50,7 +52,7 @@ public class Player extends Entity {
         // worldX = GamePanel.TILE_SIZE * 23;
         // worldY = GamePanel.TILE_SIZE * 11;
 
-        speed = 5;
+        speed = 6;
         direction = "DOWN";
 
         // PLAYER STATUS
@@ -63,6 +65,7 @@ public class Player extends Entity {
         currentShield = new OBJ_Shield_Wood(gPanel);
         attack = getAttack();
         defense = getDefense();
+        hasKey = 0;
     }
 
     public void setDefaultPositions() {
@@ -82,8 +85,8 @@ public class Player extends Entity {
         inventory.clear();
         inventory.add(currentWeapon);
         inventory.add(currentShield);
-        // inventory.add(new OBJ_Key(gPanel));
-        // inventory.add(new OBJ_Key(gPanel));
+        inventory.add(new OBJ_Potion_Red(gPanel));
+        inventory.add(new OBJ_Potion_Red(gPanel));
     }
 
     public void selectItem() {
@@ -371,7 +374,6 @@ public class Player extends Entity {
         
         if (i != 999) { 
 
-
             if (gPanel.obj[gPanel.currentMap][i].type == type_pickUpOnly) {
                 gPanel.obj[gPanel.currentMap][i].use(this);
                 gPanel.obj[gPanel.currentMap][i] = null;
@@ -382,88 +384,36 @@ public class Player extends Entity {
                         if (hasKey > 0) {
                             gPanel.obj[gPanel.currentMap][i] = null;
                             hasKey--;
+                            text = "Porte ouverte avec succès !";
                         } else {
-                            System.out.println("Vous avez besoin d'une clé !");
+                            text = "Vous avez besoin d'une clé !";
                         }
+                        gPanel.gameState = gPanel.dialogueState;
+                        gPanel.ui.currentDialogue = text;
                         break;
                     case "Chest":
-                        System.out.println("Vous êtes face à un coffre !");
+                        text = "Vous êtes face à un coffre, que faire ?";
+                        gPanel.gameState = gPanel.dialogueState;
+                        gPanel.ui.currentDialogue = text;
                         break;
                     default:
                         break;
                 }
+            } else {
+
+                if (inventory.size() != maxInventorySize) {
+                    inventory.add(gPanel.obj[gPanel.currentMap][i]);
+                    text = "Vous avez ramassé " + gPanel.obj[gPanel.currentMap][i].name + " !";
+                    System.out.println(text);
+                    gPanel.obj[gPanel.currentMap][i] = null;
+                } else {
+                    text = "Votre inventaire est plein !";
+                    gPanel.gameState = gPanel.dialogueState;
+                    gPanel.ui.currentDialogue = text;
+                }
             }
-
         }
-    }
-
-
-                // String objName = gPanel.obj[gPanel.currentMap][i].name;
-            // String text;
-
-            // if (gPanel.obj[gPanel.currentMap][i].type == type_pickUpOnly) {
-            //     gPanel.obj[gPanel.currentMap][i].use(this);
-            //     System.out.println(type_pickUpOnly);
-            //     System.out.println(gPanel.obj[gPanel.currentMap][i].name);
-            //     System.out.println(gPanel.obj[gPanel.currentMap][i].type);
-            //     gPanel.obj[gPanel.currentMap][i] = null;
-            // } else if (gPanel.obj[gPanel.currentMap][i].type == type_pickUpOnly) {
-
-            // }
-
-            // if (gPanel.obj[gPanel.currentMap][i])
-
-
-            // if (gPanel.obj[gPanel.currentMap][i].type == type_pickUpOnly) {
-            //     gPanel.obj[gPanel.currentMap][i].use(this);
-            //     gPanel.obj[gPanel.currentMap][i] = null;
-
-            // }
-            
-            
-    // else if (gPanel.obj[gPanel.currentMap][i].type == type_fixItem) {
-    //     // DEFINE ALL THE FIX ITEMS
-    //     switch (objName) {
-    //         case "Door":
-    //             if (hasKey > 0) {
-    //                 gPanel.obj[i] = null;
-    //                 hasKey--;
-    //             }
-    //             break;
-    //         // TODO add "Chest"
-    //         default:
-    //             break;
-    //     }
-    // }
-
-            // TODO review
-
-            // String objectName = gPanel.obj[gPanel.currentMap][i].name;
-            // String text;
-
-            // if (gPanel.obj[gPanel.currentMap][i].type == type_pickUpOnly) {
-            //     gPanel.obj[gPanel.currentMap][i].use(this);
-            //     gPanel.obj[gPanel.currentMap][i] = null;
-            // } 
-            //     if (inventory.size() <= maxInventorySize) {
-            //         inventory.add(gPanel.obj[gPanel.currentMap][i]);
-            //         text = "Got a " + objectName + " !";
-            //         gPanel.obj[gPanel.currentMap][i] = null;
-            //     }
-            //     else {
-            //         text = "Votre inventaire est plein !";
-            //     }
-
-            //     System.out.println(text);
-
-
-        // } 
-
-
-        // TODO
-        // }
-
-
+}
 
     public void render(GraphicsContext gc) 
     {

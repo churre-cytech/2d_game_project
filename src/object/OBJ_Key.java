@@ -10,6 +10,8 @@ public class OBJ_Key extends Entity {
 
     public OBJ_Key(GamePanel gPanel) {
         super(gPanel);
+
+        this.gPanel = gPanel;
         
         type = type_pickUpOnly;
         name = "Key";
@@ -22,8 +24,15 @@ public class OBJ_Key extends Entity {
     }
 
     public void use(Entity entity) {
+
         entity.hasKey++;
-        System.out.println("Vous avez ramassé une clé, vous avez " + entity.hasKey + " clé(s) !");
-        entity.inventory.add(this);
+        
+        String text = "Clé récupérée, vous avez " + entity.hasKey + " clé(s) !";
+        System.out.println(text);
+
+        gPanel.gameState = gPanel.dialogueState;
+        gPanel.ui.currentDialogue = text;
+
+        // entity.inventory.add(this); 
     }
 }

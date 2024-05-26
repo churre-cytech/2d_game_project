@@ -29,12 +29,14 @@ public class OBJ_Heart extends Entity {
 
     public void use(Entity entity) {
 
-        System.out.println("Life + " + itemValue);
 
         // Same as OBJ_Potion_RED -> maybe put this code at the end of update() in player class
         entity.life += itemValue;
         if (entity.life > entity.maxLife) {
             entity.life = entity.maxLife;
         }
+
+        gPanel.gameState = gPanel.dialogueState;
+        gPanel.ui.currentDialogue = "Vous avez récupéré " + itemValue + " PV !\nVous avez à présent " + entity.life + " PV !";
     }
 }

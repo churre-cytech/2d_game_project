@@ -7,18 +7,23 @@ import javafx.scene.image.Image;
 import main.GamePanel;
 import object.OBJ_Bronze_Coin;
 import object.OBJ_Heart;
+import object.OBJ_Key;
 
 public class MON_GreenSlime extends Entity {
 
+    GamePanel gPanel;
+
     public MON_GreenSlime(GamePanel gPanel) {
         super(gPanel);
+
+        this.gPanel = gPanel; 
 
         name = "Green Slime";
         type = type_monster;
         speed = 1;
         maxLife = 4;
         life = maxLife;
-        attack = 5;
+        attack = 2;
         defense = 0;
 
         solidArea.setX(3);

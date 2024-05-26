@@ -83,6 +83,16 @@ public class AssetSetter {
         gPanel.obj[mapNum][i].worldY = 19 * GamePanel.TILE_SIZE;
         i++;
 
+        gPanel.obj[mapNum][i] = new OBJ_Potion_Red(gPanel);
+        gPanel.obj[mapNum][i].worldX = 25 * GamePanel.TILE_SIZE;
+        gPanel.obj[mapNum][i].worldY = 18 * GamePanel.TILE_SIZE;
+        i++;
+
+
+        // OBJS FOR MAP 1
+        mapNum = 1;
+        i = 0;
+
     }
 
     public void setNPC() {
@@ -123,6 +133,18 @@ public class AssetSetter {
         gPanel.monster[mapNum][i] = new MON_GreenSlime(gPanel);
         gPanel.monster[mapNum][i].worldX = GamePanel.TILE_SIZE * 26;
         gPanel.monster[mapNum][i].worldY = GamePanel.TILE_SIZE * 40;
+        i++;
+
+        gPanel.monster[mapNum][i] = new MON_GreenSlime(gPanel);
+        gPanel.monster[mapNum][i].worldX = GamePanel.TILE_SIZE * 34;
+        gPanel.monster[mapNum][i].worldY = GamePanel.TILE_SIZE * 8;
+        i++;
+
+        gPanel.monster[mapNum][i] = new MON_GreenSlime(gPanel);
+        gPanel.monster[mapNum][i].worldX = GamePanel.TILE_SIZE * 40;
+        gPanel.monster[mapNum][i].worldY = GamePanel.TILE_SIZE * 12;
+        i++;
+
 
         // MONSTER FOR MAP 1
 

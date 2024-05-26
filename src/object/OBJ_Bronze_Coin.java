@@ -25,7 +25,10 @@ public class OBJ_Bronze_Coin extends Entity {
     public void use(Entity entity) {
         
         gPanel.player.coin += itemValue;
-        System.out.println("Coin : " + gPanel.player.coin);
+        String text = "Coin : " + gPanel.player.coin;
+        // System.out.println("Coin : " + gPanel.player.coin);
+        gPanel.gameState = gPanel.dialogueState;
+        gPanel.ui.currentDialogue = text;
     }
     
 }
