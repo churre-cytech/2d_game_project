@@ -58,8 +58,49 @@ public class UI {
             drawTradeScreen();
         } else if (gPanel.gameState == gPanel.gameOverState) {
             drawGameOverScreen();
+        } else if (gPanel.gameState == gPanel.victoryState) {
+            drawVictoryScreen();
         }
     }
+
+    public void drawVictoryScreen() {
+
+        // VICTORY
+        gc.setFill(Color.WHITE);
+
+        String textString = "VICTORY";
+        Font font = Font.font("Arial", 56);
+        Text text = new Text(textString);
+        text.setFont(font);
+
+        double textWidth = text.getLayoutBounds().getWidth();
+
+        int y = GamePanel.SCREEN_HEIGHT/2;
+        int x = (int)(GamePanel.SCREEN_WIDTH/2 - textWidth/2);
+
+        gc.setFont(font);
+        gc.fillText(textString, x, y);
+
+        // RETRY
+        y += GamePanel.TILE_SIZE * 3;
+
+        gc.setFill(Color.WHITE);
+
+        textString = "RETRY";
+        font = Font.font("Arial", 40);
+        text = new Text(textString);
+        text.setFont(font);
+
+        textWidth = text.getLayoutBounds().getWidth();
+        x = (int)(GamePanel.SCREEN_WIDTH/2 - textWidth/2);
+
+        gc.setFont(font);
+        gc.fillText(textString, x, y);
+        if (commandNum == 0) {
+            gc.fillText(">", x - 40 , y);
+        }
+    }
+
 
     public void drawGameOverScreen() {
 

@@ -62,7 +62,7 @@ public class Player extends Entity {
         currentShield = new OBJ_Shield_Wood(gPanel);
         attack = getAttack();
         defense = getDefense();
-        hasKey = 0;
+        hasKey = 5; // TODO reset to 0 after debug
     }
 
     public void setDefaultPositions() {
@@ -340,6 +340,7 @@ public class Player extends Entity {
                 }
 
                 System.out.println("PV de " + gPanel.monster[gPanel.currentMap][i].name + " : " + gPanel.monster[gPanel.currentMap][i].life + ".");
+                System.out.println("Inventaire" + gPanel.monster[gPanel.currentMap][i].name + " obj : " + gPanel.monster[gPanel.currentMap][i].inventory);
             }
         } else {
         }
@@ -390,9 +391,10 @@ public class Player extends Entity {
                         gPanel.ui.currentDialogue = text;
                         break;
                     case "Chest":
-                        text = "Vous êtes face à un coffre, que faire ?";
+                        text = "Vous êtes face à un coffre,\nVous avez gagné !";
                         gPanel.gameState = gPanel.dialogueState;
                         gPanel.ui.currentDialogue = text;
+                        gPanel.gameState = gPanel.victoryState;
                         break;
                     default:
                         break;

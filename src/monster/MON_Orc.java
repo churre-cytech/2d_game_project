@@ -5,6 +5,9 @@ import java.util.Random;
 import entity.Entity;
 import javafx.scene.image.Image;
 import main.GamePanel;
+import object.OBJ_Bronze_Coin;
+import object.OBJ_Heart;
+import object.OBJ_Key;
 
 public class MON_Orc extends Entity {
 
@@ -74,5 +77,16 @@ public class MON_Orc extends Entity {
         }
     }
 
-    public void checkDrop() {}
+    public void checkDrop() {
+
+        int i = new Random().nextInt(100)+1;
+
+        if (i < 50) {
+            dropItem(new OBJ_Heart(gPanel));
+        }
+        if (i >= 50 && i < 100) {
+            dropItem(new OBJ_Key(gPanel));
+        }
+
+    }
 }

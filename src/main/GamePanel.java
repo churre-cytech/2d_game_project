@@ -52,7 +52,7 @@ public class GamePanel extends Canvas
     public AssetSetter aSetter = new AssetSetter(this);
 
     // OBJECT
-    public Entity obj[][] = new Entity[MAX_MAP][20];
+    public Entity obj[][] = new Entity[MAX_MAP][30];
 
     // NPC
     public Entity npc[][] = new Entity[MAX_MAP][10];
@@ -71,6 +71,7 @@ public class GamePanel extends Canvas
     public final int characterState = 4;
     public final int tradeState = 5;
     public final int gameOverState = 6;
+    public final int victoryState = 7;
 
     public GamePanel()
     {

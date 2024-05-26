@@ -7,6 +7,8 @@ import javafx.scene.image.Image;
 import main.GamePanel;
 import object.OBJ_Bronze_Coin;
 import object.OBJ_Heart;
+import object.OBJ_Key;
+import object.OBJ_Sword_Normal;
 
 public class MON_GreenSlime extends Entity {
 
@@ -33,6 +35,7 @@ public class MON_GreenSlime extends Entity {
         solidAreaDefaultY = (int) solidArea.getY();
         
         getImage();
+        setItems();
     }
 
     public void getImage() {
@@ -82,16 +85,26 @@ public class MON_GreenSlime extends Entity {
         direction = gPanel.player.direction;
     }
 
+    public void setItems() {
+        inventory.clear();
+        inventory.add(new OBJ_Sword_Normal(gPanel));
+        inventory.add(new OBJ_Key(gPanel));
+    }
+
     public void checkDrop() {
 
-        int i = new Random().nextInt(100)+1;
+        for (Entity item : inventory) {
+            dropItem(item);
+        }
 
-        if (i < 50) {
-            dropItem(new OBJ_Heart(gPanel));
-        }
-        if (i >= 50 && i < 100) {
-            dropItem(new OBJ_Bronze_Coin(gPanel));
-        }
+        // int i = new Random().nextInt(100)+1;
+
+        // if (i < 50) {
+        //     dropItem(new OBJ_Heart(gPanel));
+        // }
+        // if (i >= 50 && i < 100) {
+        //     dropItem(new OBJ_Bronze_Coin(gPanel));
+        // }
     }
     
 }

@@ -149,6 +149,7 @@ public class Entity {
             }
     }
 
+    public void setItems() {}
     public void setAction() {}
     public void damageReaction() {}
     public void use(Entity entity) {}

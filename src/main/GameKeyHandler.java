@@ -171,8 +171,12 @@ public class GameKeyHandler implements EventHandler<KeyEvent> {
                                 gPanel.gameState = gPanel.playState;
                                 gPanel.retry();
                             }
+                        } else if (gPanel.gameState == gPanel.victoryState) {
+                            if (gPanel.ui.commandNum == 0) {
+                                gPanel.gameState = gPanel.playState;
+                                gPanel.retry();
+                            }
                         }
-
                         break;
                     case T:
                         if (showTextDebug == false) {

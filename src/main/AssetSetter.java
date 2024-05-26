@@ -1,12 +1,14 @@
 package main;
 
 import object.OBJ_Key;
+import object.OBJ_Potion_Red;
 import object.OBJ_Shield_Wood;
 import entity.NPC_Merchant;
 import entity.NPC_OldMan;
 import monster.MON_GreenSlime;
 import monster.MON_Orc;
 import object.OBJ_Axe;
+import object.OBJ_Bronze_Coin;
 import object.OBJ_Chest;
 import object.OBJ_Door;
 import object.OBJ_Heart;
@@ -58,11 +60,6 @@ public class AssetSetter {
         i++;
 
         gPanel.obj[mapNum][i] = new OBJ_Key(gPanel);
-        gPanel.obj[mapNum][i].worldX = 23 * GamePanel.TILE_SIZE;
-        gPanel.obj[mapNum][i].worldY = 39 * GamePanel.TILE_SIZE;
-        i++;
-
-        gPanel.obj[mapNum][i] = new OBJ_Key(gPanel);
         gPanel.obj[mapNum][i].worldX = 35 * GamePanel.TILE_SIZE;
         gPanel.obj[mapNum][i].worldY = 41 * GamePanel.TILE_SIZE;
         i++;
@@ -86,6 +83,17 @@ public class AssetSetter {
         gPanel.obj[mapNum][i].worldX = 33 * GamePanel.TILE_SIZE;
         gPanel.obj[mapNum][i].worldY = 7 * GamePanel.TILE_SIZE;
         i++;
+
+        gPanel.obj[mapNum][i] = new OBJ_Potion_Red(gPanel);
+        gPanel.obj[mapNum][i].worldX = 17 * GamePanel.TILE_SIZE;
+        gPanel.obj[mapNum][i].worldY = 16 * GamePanel.TILE_SIZE;
+        i++;
+
+        gPanel.obj[mapNum][i] = new OBJ_Bronze_Coin(gPanel);
+        gPanel.obj[mapNum][i].worldX = 15 * GamePanel.TILE_SIZE;
+        gPanel.obj[mapNum][i].worldY = 13 * GamePanel.TILE_SIZE;
+        i++;
+
 
         // OBJS FOR MAP 1
         mapNum = 1;
@@ -137,6 +145,13 @@ public class AssetSetter {
         gPanel.monster[mapNum][i].worldX = GamePanel.TILE_SIZE * 34;
         gPanel.monster[mapNum][i].worldY = GamePanel.TILE_SIZE * 8;
         i++;
+
+        
+        gPanel.monster[mapNum][i] = new MON_GreenSlime(gPanel);
+        gPanel.monster[mapNum][i].worldX = GamePanel.TILE_SIZE * 30;
+        gPanel.monster[mapNum][i].worldY = GamePanel.TILE_SIZE * 16;
+        i++;
+
 
         gPanel.monster[mapNum][i] = new MON_GreenSlime(gPanel);
         gPanel.monster[mapNum][i].worldX = GamePanel.TILE_SIZE * 40;
